@@ -1,15 +1,14 @@
----
-description: "Completed Visual Studio project from the tutorial Get started with WebView2 in Win32 apps."
-languages: 
-  - cpp
-page_type: sample
-products: 
-  - microsoft-edge
-urlFragment: Win32_GettingStarted
----
-# Get started with WebView2 in Win32 apps
+# # Scratchでゲームを作ろう！
+🔗[紹介サイト](https://miyagi-yuta.com/scratch-webview/)
+![Image](Preview.jpg)
 
-<!-- only enough info to differentiate this sample vs the others; what is different about this sample compared to the sibling samples? -->
-This sample, **Win32_GettingStarted**, is a completed Visual Studio project that includes WebView2 code already added for you.  The tutorial [Get started with WebView2 in Win32 apps](https://learn.microsoft.com/microsoft-edge/webview2/get-started/win32) starts by opening this completed project.
+## **動作環境**
 
-![The running app for the Win32 Get Started tutorial](screenshots/bing-window.png)
+対象OS：Windows 10 以降  
+操作機器：マウス&キーボード
+ 
+## 操作方法
+| **入力** | 動作 |
+| :--: | :--: |
+| クリック | 決定 |
+| Esc + Enter | 選択 |
