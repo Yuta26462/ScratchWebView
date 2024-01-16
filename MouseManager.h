@@ -1,16 +1,16 @@
 #pragma once
-#include "Mole.h"
+#include "Mouse.h"
 #include <vector>
 #include "Timer.h"
 #include <unordered_map>
 #include "Define.h"
 #include "DragAndDropObject.h"
 
-class MoleManager
+class MouseManager
 {
 private:
-	//モグラ配列
-	std::vector<std::shared_ptr<Mole>> mole;
+	//ネズミ配列
+	std::vector<std::shared_ptr<Mouse>> mouse;
 
 	//ドラッグオブジェクト
 	std::shared_ptr<DragAndDropObject>dragObject;
@@ -27,8 +27,8 @@ private:
 	//スポーンさせるかどうか
 	bool isExecutionSpawn;
 
-	//マウス座標
-	Object::Location mousePoint;
+	//マウスカーソル座標
+	Object::Location cursorPoint;
 
 	//前回のマウス入力情報
 	int oldMouseInput;
@@ -48,8 +48,8 @@ private:
 	Object::Location windowSize;
 
 public:
-	MoleManager(int gamemode,std::shared_ptr<DragAndDropObject>dragObject);
-	~MoleManager();
+	MouseManager(int gamemode,std::shared_ptr<DragAndDropObject>dragObject);
+	~MouseManager();
 
 	void Update();
 	void Draw() const;

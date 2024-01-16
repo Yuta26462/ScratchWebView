@@ -1,10 +1,10 @@
-#include "MoleManager.h"
+#include "MouseManager.h"
 #include <iostream>
 #include <random>
 #include "DxLib.h"
 #include <Windows.h>
 
-MoleManager::MoleManager(int gamemode, std::shared_ptr<DragAndDropObject>dragObject)
+MouseManager::MouseManager(int gamemode, std::shared_ptr<DragAndDropObject>dragObject)
 {
 	/*RECT rect;
 	GetWindowRect(GetDesktopWindow(), &rect);
@@ -38,7 +38,7 @@ MoleManager::MoleManager(int gamemode, std::shared_ptr<DragAndDropObject>dragObj
 	timer = std::make_unique<Timer>();
 	isExecutionSpawn = false;
 
-	mousePoint = { 0,0 };
+	cursorPoint = { 0,0 };
 
 	oldMouseInput = 0;
 
@@ -47,25 +47,25 @@ MoleManager::MoleManager(int gamemode, std::shared_ptr<DragAndDropObject>dragObj
 	spawnVolume = 1;
 }
 
-MoleManager::~MoleManager()
+MouseManager::~MouseManager()
 {
 	AppearanceInfomation.clear();
 	AppearanceInfomation.shrink_to_fit();
 
-	mole.clear();
-	mole.shrink_to_fit();
+	mouse.clear();
+	mouse.shrink_to_fit();
 }
 
-void MoleManager::Update()
+void MouseManager::Update()
 {
 	if (gameMode == gamemode::clickPractice)
 	{
-		//マウス座標の取得
-		GetMousePoint(&mousePoint.x, &mousePoint.y);
+		//マウスカーソル座標の取得
+		GetMousePoint(&cursorPoint.x, &cursorPoint.y);
 	}
 
 	//何もいなければ1秒毎にスポーンさせる
-	if (mole.size() == 0 && isExecutionSpawn == false)
+	if (mouse.size() == 0 && isExecutionSpawn == false)
 	{
 		timer->LoopTimer(1.0f, &isSpawn);
 
@@ -76,11 +76,11 @@ void MoleManager::Update()
 		}
 	}
 	
-	for (int i=0;i<mole.size();i++)
+	for (int i=0;i<mouse.size();i++)
 	{
-		mole.at(i)->Update();
+		mouse.at(i)->Update();
 
-		Object::Location tLocation = mole.at(i)->GetLocation();
+		Object::Location tLocation = mouse.at(i)->GetLocation();
 
 		switch (gameMode)
 		{
@@ -88,7 +88,7 @@ void MoleManager::Update()
 
 			//対象をクリックすると削除する
 			if ((((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) && oldMouseInput == 0)
-				&& tLocation.x <= mousePoint.x && mousePoint.x <= tLocation.x + mouseSize && tLocation.y <= mousePoint.y && mousePoint.y <= tLocation.y + mouseSize)
+				&& tLocation.x <= cursorPoint.x && cursorPoint.x <= tLocation.x + mouseSize && tLocation.y <= cursorPoint.y && cursorPoint.y <= tLocation.y + mouseSize)
 			{
 				//取得数を格納
 				collectCount++;
@@ -99,7 +99,7 @@ void MoleManager::Update()
 					spawnVolume++;
 				}
 
-				mole.erase(mole.begin() + i);
+				mouse.erase(mouse.begin() + i);
 				AppearanceInfomation.erase(AppearanceInfomation.begin() + i);
 				i--;
 
@@ -119,7 +119,7 @@ void MoleManager::Update()
 				//取得数を格納
 				collectCount++;
 
-				mole.erase(mole.begin() + i);
+				mouse.erase(mouse.begin() + i);
 				AppearanceInfomation.erase(AppearanceInfomation.begin() + i);
 				i--;
 			}
@@ -136,26 +136,26 @@ void MoleManager::Update()
 	oldMouseInput = GetMouseInput();
 }
 
-void MoleManager::Draw() const
+void MouseManager::Draw() const
 {
-	for (auto& mol : mole)
+	for (auto& mol : mouse)
 	{
 		mol->Draw();
 	}
 }
 
-void MoleManager::Spawn(int spawnVolume)
+void MouseManager::Spawn(int spawnVolume)
 {
 	for (int i = 0; i < spawnVolume; i++)
 	{
 		Object::Location spawnLocation;
 		spawnLocation = GetRandomNumber();
 
-		mole.push_back(std::make_shared<Mole>(spawnLocation));
+		mouse.push_back(std::make_shared<Mouse>(spawnLocation));
 	}
 }
 
-Object::Location MoleManager::GetRandomNumber()
+Object::Location MouseManager::GetRandomNumber()
 {
 	Object::Location spawnPoint;
 

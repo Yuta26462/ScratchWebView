@@ -1,6 +1,6 @@
 #pragma once
 #include "AbstractScene.h"
-#include "MoleManager.h"
+#include "MouseManager.h"
 #include "DragAndDropObject.h"
 #include "Define.h"
 #include <string>
@@ -12,7 +12,7 @@ private:
 	int gameMode;
 
 	std::shared_ptr<DragAndDropObject>dragObject;
-	std::unique_ptr<MoleManager>moleManager;
+	std::unique_ptr<MouseManager>mouseManager;
 
 	//タイマーオブジェクト
 	std::unique_ptr<Timer> timer;

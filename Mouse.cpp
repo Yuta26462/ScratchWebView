@@ -1,20 +1,20 @@
-#include "Mole.h"
+#include "Mouse.h"
 #include "DxLib.h"
 #include "ResourceManager.h"
 
-Mole::Mole(Location spawnLocation)
+Mouse::Mouse(Location spawnLocation)
 {
 	location = spawnLocation;
 	size = 80;
 	image = ResourceManager::LoadImages(imagetype::mouse);
 }
 
-Mole::~Mole()
+Mouse::~Mouse()
 {
 
 }
 
-void Mole::Update()
+void Mouse::Update()
 {
 
 }

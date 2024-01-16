@@ -1,13 +1,13 @@
 #pragma once
 #include "Object.h"
 
-class Mole :public Object
+class Mouse :public Object
 {
 private:
 
 public:
-	Mole(Location spawnLocation);
-	~Mole();
+	Mouse(Location spawnLocation);
+	~Mouse();
 
 	void Update() override;
 };

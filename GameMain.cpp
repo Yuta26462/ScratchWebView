@@ -20,14 +20,14 @@ GameMain::GameMain(int gamemode)
 	switch (gameMode)
 	{
 	case gamemode::clickPractice:
-		moleManager = std::make_unique<MoleManager>(gamemode::clickPractice,nullptr);
+		mouseManager = std::make_unique<MouseManager>(gamemode::clickPractice,nullptr);
 
 		break;
 
 	case gamemode::dragPractice:
 		dragObject = std::make_shared<DragAndDropObject>();
 
-		moleManager = std::make_unique<MoleManager>(gamemode::dragPractice,dragObject);
+		mouseManager = std::make_unique<MouseManager>(gamemode::dragPractice,dragObject);
 
 		break;
 
@@ -66,7 +66,7 @@ AbstractScene* GameMain::Update()
 		{
 			timer->LoopTimer(timeLimit, &SetTimeUp);
 
-			moleManager->Update();
+			mouseManager->Update();
 
 			//ゲームモードによって処理を変える
 			switch (gameMode)
@@ -107,15 +107,15 @@ void GameMain::Draw() const
 		switch (gameMode)
 		{
 		case gamemode::clickPractice:
-			/*DrawStringToHandle(100, 200, "ここでは、クリックのれんしゅうをします\nマウスのボタンを押すことをクリックといいます\nがめんに出てくるネズミをクリックしてつかまえてみよう"
+			DrawStringToHandle(100, 200, "ここでは、クリックのれんしゅうをします\nマウスのボタンを押すことをクリックといいます\nがめんに出てくるネズミをクリックしてつかまえてみよう"
 				, 0xffffff, *fonts.at(fontname::text));
-			DrawStringToHandle(220, 300, "-- クリックしてスタート --", 0xffffff, *fonts.at(fontname::text));*/
+			DrawStringToHandle(220, 300, "-- クリックしてスタート --", 0xffffff, *fonts.at(fontname::text));
 			break;
 
 		case gamemode::dragPractice:
-			/*DrawStringToHandle(100, 170, "ここでは、ドラッグ&ドロップのれんしゅうをします\nマウスのボタンを押し続けることをドラッグといい\nドラッグ中にボタンから指をはなすことをドロップといいます\nねこをドラッグしてネズミのいる場所に連れていき\nドロップさせてねずみをつかまえさせよう",
+			DrawStringToHandle(100, 170, "ここでは、ドラッグ&ドロップのれんしゅうをします\nマウスのボタンを押し続けることをドラッグといい\nドラッグ中にボタンから指をはなすことをドロップといいます\nねこをドラッグしてネズミのいる場所に連れていき\nドロップさせてねずみをつかまえさせよう",
 				0xffffff, *fonts.at(fontname::text));
-			DrawStringToHandle(220, 300, "-- クリックしてスタート --", 0xffffff, *fonts.at(fontname::text));*/
+			DrawStringToHandle(220, 300, "-- クリックしてスタート --", 0xffffff, *fonts.at(fontname::text));
 			break;
 
 		default:
@@ -131,9 +131,9 @@ void GameMain::Draw() const
 		{
 			DrawFormatStringToHandle(0, 0, 0xffffff, *fonts.at(fontname::mainUi), "%d", 30 - static_cast<int>(timer->GetElapsedTime()));
 		}
-		DrawFormatStringToHandle(600, 0, 0xffffff, *fonts.at(fontname::mainUi), "%d", moleManager->GetCollectCount());
+		DrawFormatStringToHandle(600, 0, 0xffffff, *fonts.at(fontname::mainUi), "%d", mouseManager->GetCollectCount());
 
-		moleManager->Draw();
+		mouseManager->Draw();
 
 		//ゲームモードによって処理を変える
 		switch (gameMode)
@@ -159,7 +159,7 @@ void GameMain::Draw() const
 
 		DrawStringToHandle(175, 170, "TIME UP", 0xff0000, *fonts.at(fontname::result));
 
-		DrawFormatStringToHandle(245, 260, 0xffffff, *fonts.at(fontname::text), "つかまえた数 %d", moleManager->GetCollectCount());
+		DrawFormatStringToHandle(245, 260, 0xffffff, *fonts.at(fontname::text), "つかまえた数 %d", mouseManager->GetCollectCount());
 
 		DrawStringToHandle(185, 300, "-- クリックしてタイトルに戻る --", 0xffffff, *fonts.at(fontname::text));
 
