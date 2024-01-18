@@ -238,6 +238,7 @@
     <ClCompile Include="oval_button.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="src\game\utility\Guide.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="WebViewScene.cpp" />
@@ -258,6 +259,7 @@
     <ClInclude Include="oval_button.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="src\game\utility\Guide.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="WebViewScene.h" />
