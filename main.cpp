@@ -20,7 +20,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	SetAlwaysRunFlag(true);		//常にアクティブにする
 
-	ChangeWindowMode(FALSE);		// ウィンドウモードで起動
+	ChangeWindowMode(true);		// ウィンドウモードで起動
 
 	SetGraphMode(1280, 720, 32);		//画面サイズの設定
 

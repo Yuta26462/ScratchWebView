@@ -45,6 +45,8 @@ GameMain::GameMain(int gamemode)
 
 	isHelpTime = true;
 	isTimeUp = false;
+
+	mouseInputLog = GetMouseInput();
 }
 
 GameMain::~GameMain()
@@ -55,10 +57,29 @@ AbstractScene* GameMain::Update()
 {
 	if (isHelpTime == true)
 	{
-		if (((GetMouseInput() & MOUSE_INPUT_LEFT) != 0))
+		//マウス入力情報
+		int mouseInput;
+		int mouseX;
+		int mouseY;
+		int logType;
+
+		if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
 		{
-			isHelpTime = false;
+			if (mouseInputLog == NULL)
+			{
+				isHelpTime = false;
+			}
 		}
+
+		mouseInputLog = GetMouseInput();
+
+		//if (GetMouseInputLog2(&mouseInput, &mouseX, &mouseY, &logType, TRUE) == 0)
+		//{
+		//	if ((mouseInput & MOUSE_INPUT_LEFT) != 0)
+		//	{
+		//		//isHelpTime = false;
+		//	}
+		//}
 	}
 	else
 	{
@@ -101,15 +122,18 @@ void GameMain::Draw() const
 {
 	if (isHelpTime == true)
 	{
-		DrawBox(80, 130, 600, 350, 0xfffbe3, TRUE);
+		DrawBox(170, 120, 1110, 600, 0xfffbe3, TRUE);
 
 		//ゲームモードによって処理を変える
 		switch (gameMode)
 		{
 		case gamemode::clickPractice:
-			DrawStringToHandle(100, 200, "ここでは、クリックのれんしゅうをします\nマウスのボタンを押すことをクリックといいます\nがめんに出てくるネズミをクリックしてつかまえてみよう"
+			DrawStringToHandle(180, 200, "ここでは、", 0xffffff, *fonts.at(fontname::text));
+			DrawStringToHandle(345, 200, "クリック", 0xff0000, *fonts.at(fontname::text));
+			DrawStringToHandle(484, 200, "のれんしゅうをします。", 0xffffff, *fonts.at(fontname::text));
+			/*DrawStringToHandle(180, 200, "ここでは、クリックのれんしゅうをします\nマウスのボタンを押すことをクリックといいます\nがめんに出てくるネズミをクリックしてつかまえてみよう"
 				, 0xffffff, *fonts.at(fontname::text));
-			DrawStringToHandle(220, 300, "-- クリックしてスタート --", 0xffffff, *fonts.at(fontname::text));
+			DrawStringToHandle(220, 300, "-- クリックしてスタート --", 0xffffff, *fonts.at(fontname::text));*/
 			break;
 
 		case gamemode::dragPractice:
@@ -129,7 +153,12 @@ void GameMain::Draw() const
 	{
 		if (isTimeUp == false)
 		{
-			DrawFormatStringToHandle(0, 0, 0xffffff, *fonts.at(fontname::mainUi), "%d", 30 - static_cast<int>(timer->GetElapsedTime()));
+			int time = static_cast<int>(timer->GetElapsedTime());
+			if (30 < time)
+			{
+				time = 30;
+			}
+			DrawFormatStringToHandle(0, 0, 0xffffff, *fonts.at(fontname::mainUi), "%d", 30 - time);
 		}
 		DrawFormatStringToHandle(600, 0, 0xffffff, *fonts.at(fontname::mainUi), "%d", mouseManager->GetCollectCount());
 

@@ -31,6 +31,9 @@ private:
 	//ゲーム説明画面かどうか
 	bool isHelpTime;
 
+	//前フレームのマウス入力情報
+	int mouseInputLog;
+
 	std::string helpText;
 
 	bool ones;

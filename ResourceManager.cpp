@@ -53,7 +53,7 @@ std::shared_ptr<int> ResourceManager::LoadFont(short fontId)
 	{
 	case fontname::text:
 		fontInfo.fontName = "UD ÉfÉWÉ^Éã ã≥â»èëëÃ N-B";
-		fontInfo.size = 15;
+		fontInfo.size = 35;
 		fontInfo.thick =3;
 		fontInfo.fontType = DX_FONTTYPE_ANTIALIASING_EDGE_8X8;
 		break;
