@@ -7,8 +7,7 @@
 class Title :public AbstractScene
 {
 private:
-	int scratchLogoImage;
-	int scratchCatImage;
+	int catImage;
 	int mouseImage;
 	int mouseClickImage;
 	std::shared_ptr<int> bgm; // BGM‚Ìƒnƒ“ƒhƒ‹

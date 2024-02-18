@@ -6,10 +6,9 @@
 
 Title::Title()
 {
-	scratchLogoImage = LoadGraph("Resource/image/Scratch_logo.png");
 	mouseImage = LoadGraph("Resource/image/mouseNotClick.png");
 	mouseClickImage = LoadGraph("Resource/image/mouseClick.png");
-	scratchCatImage = LoadGraph("Resource/image/scratch_cat.png");
+	catImage = LoadGraph("Resource/image/cat2.png");
 	bgm = ResourceManager::LoadSounds(soundtype::title_bgm);
 	button_click = ResourceManager::LoadSounds(soundtype::button_click);
 
@@ -31,10 +30,9 @@ Title::~Title()
 	//シーンの切り替えが行われたらBGMを止める
 	StopSoundMem(*bgm);
 
-	DeleteGraph(scratchLogoImage);
 	DeleteGraph(mouseImage);
 	DeleteGraph(mouseClickImage);
-	DeleteGraph(scratchCatImage);
+	DeleteGraph(catImage);
 	DeleteFontToHandle(fontHandle);
 	delete button[0];
 	delete button[1];
@@ -83,8 +81,7 @@ AbstractScene* Title::Update()
 
 void Title::Draw() const
 {
-	DrawGraph(60,70, scratchLogoImage, true);
-	DrawGraph(600,200, scratchCatImage, true);
+	DrawGraph(600,200, catImage, true);
 
 	const int mouseX = 150;
 	const int mouseY = 200;
@@ -98,6 +95,5 @@ void Title::Draw() const
 	button[1]->Draw();
 	button[2]->Draw();
 
-	int x = 1280 / 2 - GetDrawFormatStringWidthToHandle(fontHandle, "でゲームを作ろう！") / 2;
-	DrawFormatString2ToHandle(x + 200, 100, 0xffffff, 0xFFAD45, fontHandle, "でゲームを作ろう！");
+	DrawFormatString2ToHandle(GetDrawCenterX("スクラッチでゲームを作ろう！", fontHandle), 100, 0xffffff, 0xFFAD45, fontHandle, "スクラッチでゲームを作ろう！");
 }
