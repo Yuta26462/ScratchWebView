@@ -11,6 +11,16 @@ namespace imagetype
 	const int cat = 1;
 }
 
+//音声名マクロ
+namespace soundtype
+{
+	const int title_bgm = 1;
+	const int game_main_bgm = 2;
+	const int click = 3;
+	const int drag_and_drop= 4;
+	const int button_click = 5;
+}
+
 //フォント名マクロ
 namespace fontname
 {
@@ -39,6 +49,9 @@ private:
 	//画像格納配列
 	static std::unordered_map<short, std::shared_ptr<int>> imageContainer;
 
+	//音声格納配列
+	static std::unordered_map<short, std::shared_ptr<int>> soundContainer;
+
 	//フォント格納配列
 	static std::unordered_map<short, std::shared_ptr<int>> fontContainer;
 
@@ -48,6 +61,9 @@ public:
 
 	//画像読み込み、取得関数
 	static std::shared_ptr<int>LoadImages(short imageId);
+
+	//音声読み込み、取得関数
+	static std::shared_ptr<int>LoadSounds(short soundId);
 
 	//フォント読み込み、取得関数
 	static std::shared_ptr<int> LoadFont(short fontId);
