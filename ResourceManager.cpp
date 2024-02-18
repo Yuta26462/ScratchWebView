@@ -59,7 +59,7 @@ std::shared_ptr<int> ResourceManager::LoadSounds(short soundId)
 	switch (soundId)
 	{
 	case soundtype::title_bgm:
-		filePath += "bgm/game_main";
+		filePath += "bgm/title";
 		break;
 
 	case soundtype::game_main_bgm:

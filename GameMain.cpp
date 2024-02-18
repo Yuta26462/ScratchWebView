@@ -14,6 +14,9 @@ GameMain::GameMain(int gamemode)
 	fonts[fontname::mainUi] = ResourceManager::LoadFont(fontname::mainUi);
 	fonts[fontname::text] = ResourceManager::LoadFont(fontname::text);
 
+	bgm = ResourceManager::LoadSounds(soundtype::game_main_bgm);
+	button_click = ResourceManager::LoadSounds(soundtype::button_click);
+
 	//ゲームモードの設定
 	gameMode = gamemode;
 	std::ifstream ifs;
@@ -42,12 +45,14 @@ GameMain::GameMain(int gamemode)
 
 	SetBackgroundColor(209, 186, 212);
 
-	GetWindowSize(&centerLocation.x, &centerLocation.y);
-
+	//BGMの再生
+	PlaySoundMem(*bgm, DX_PLAYTYPE_LOOP, FALSE);
 }
 
 GameMain::~GameMain()
 {
+	//シーンの切り替えが行われたらBGMを止める
+	StopSoundMem(*bgm);
 }
 
 AbstractScene* GameMain::Update()
@@ -59,6 +64,10 @@ AbstractScene* GameMain::Update()
 	{
 		if (IsMouseLeftClicked())
 		{
+			// SE再生が再生されていない場合に再生する
+			if (!CheckSoundMem(*button_click)) {
+				PlaySoundMem(*button_click, DX_PLAYTYPE_BACK, TRUE);
+			}
 			// 説明画面を非表示にする
 			isHelpTime = false;
 		}
@@ -88,11 +97,14 @@ AbstractScene* GameMain::Update()
 		else
 		{
 			// マウス入力を10フレーム無視する
-			ignoreMouseInputFrames = 10;
+			//ignoreMouseInputFrames = 10;
 			//timer->LoopTimer(1.0f, &SetTimeUp);
-			if (isTimeUp == true && ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0))
+			if (IsMouseLeftClicked())
 			{
-
+				// SE再生
+				PlaySoundMem(*button_click, DX_PLAYTYPE_BACK, TRUE);
+				//SEが鳴り終わってから画面推移する。
+				while (CheckSoundMem(*button_click)) {}
 				return new Title;
 			}
 		}

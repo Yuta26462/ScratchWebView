@@ -30,8 +30,6 @@ Title::~Title()
 {
 	//ƒV[ƒ“‚ÌØ‚è‘Ö‚¦‚ªs‚í‚ê‚½‚çBGM‚ğ~‚ß‚é
 	StopSoundMem(*bgm);
-	DeleteSoundMem(*bgm);
-	DeleteSoundMem(*button_click);
 
 	DeleteGraph(scratchLogoImage);
 	DeleteGraph(mouseImage);

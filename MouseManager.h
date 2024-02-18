@@ -9,6 +9,9 @@
 class MouseManager
 {
 private:
+	std::shared_ptr<int> click; // SEのハンドル
+	std::shared_ptr<int> drag_and_drop; // SEのハンドル
+
 	//ネズミ配列
 	std::vector<std::shared_ptr<Mouse>> mouse;
 

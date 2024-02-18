@@ -4,15 +4,13 @@
 #include "DxLib.h"
 #include <Windows.h>
 
+#include "ResourceManager.h"
+
 MouseManager::MouseManager(int gamemode, std::shared_ptr<DragAndDropObject>dragObject)
 {
-	/*RECT rect;
-	GetWindowRect(GetDesktopWindow(), &rect);
 
-	windowSize.x = rect.right - rect.left;
-	windowSize.y = rect.bottom - rect.top;*/
-
-	GetWindowSize(&windowSize.x, &windowSize.y);
+	click = ResourceManager::LoadSounds(soundtype::click);
+	drag_and_drop = ResourceManager::LoadSounds(soundtype::drag_and_drop);
 
 	gameMode = gamemode;
 
@@ -90,6 +88,9 @@ void MouseManager::Update()
 			if ((((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) && oldMouseInput == 0)
 				&& tLocation.x <= cursorPoint.x && cursorPoint.x <= tLocation.x + mouseSize && tLocation.y <= cursorPoint.y && cursorPoint.y <= tLocation.y + mouseSize)
 			{
+				// SE‚ðÄ¶
+				PlaySoundMem(*click, DX_PLAYTYPE_BACK, TRUE);
+
 				//Žæ“¾”‚ðŠi”[
 				collectCount++;
 
@@ -116,6 +117,9 @@ void MouseManager::Update()
 				&& tLocation.x <= dLocation.x + dSize && dLocation.x <= tLocation.x + mouseSize
 				&& tLocation.y <= dLocation.y + dSize && dLocation.y <= tLocation.y + mouseSize)
 			{
+				// SE‚ðÄ¶
+				PlaySoundMem(*drag_and_drop, DX_PLAYTYPE_BACK, TRUE);
+
 				//Žæ“¾”‚ðŠi”[
 				collectCount++;
 

@@ -17,6 +17,9 @@ private:
 	int currentMouseInput;  // 現在のフレームのマウス入力状態を記録
 	int ignoreMouseInputFrames; // マウス入力を無視するフレーム数を設定
 
+	std::shared_ptr<int> bgm; // BGMのハンドル
+	std::shared_ptr<int> button_click; // SEのハンドル
+
 
 	std::shared_ptr<DragAndDropObject>dragObject;
 	std::unique_ptr<MouseManager>mouseManager;
@@ -33,7 +36,7 @@ private:
 	bool isTimeUp;
 
 	//中央座標
-	Object::Location centerLocation;
+	//Object::Location centerLocation;
 	
 	//ゲーム説明画面かどうか
 	bool isHelpTime;
