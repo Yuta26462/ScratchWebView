@@ -227,6 +227,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractScene.cpp" />
     <ClCompile Include="DragAndDropObject.cpp" />
     <ClCompile Include="FpsManager.cpp" />
     <ClCompile Include="GameMain.cpp" />

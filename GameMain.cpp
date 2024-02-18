@@ -6,6 +6,7 @@
 
 
 GameMain::GameMain(int gamemode)
+	:isTimeUp(false), isHelpTime(true), previousMouseInput(0), currentMouseInput(0), ones(true), ignoreMouseInputFrames(10)
 {
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -20,14 +21,14 @@ GameMain::GameMain(int gamemode)
 	switch (gameMode)
 	{
 	case gamemode::clickPractice:
-		mouseManager = std::make_unique<MouseManager>(gamemode::clickPractice,nullptr);
+		mouseManager = std::make_unique<MouseManager>(gamemode::clickPractice, nullptr);
 
 		break;
 
 	case gamemode::dragPractice:
 		dragObject = std::make_shared<DragAndDropObject>();
 
-		mouseManager = std::make_unique<MouseManager>(gamemode::dragPractice,dragObject);
+		mouseManager = std::make_unique<MouseManager>(gamemode::dragPractice, dragObject);
 
 		break;
 
@@ -35,16 +36,14 @@ GameMain::GameMain(int gamemode)
 		break;
 	}
 
-	while (std::getline(ifs, helpText)){}
+	while (std::getline(ifs, helpText)) {}
 
 	timer = std::make_unique<Timer>();
 
 	SetBackgroundColor(209, 186, 212);
-	
+
 	GetWindowSize(&centerLocation.x, &centerLocation.y);
 
-	isHelpTime = true;
-	isTimeUp = false;
 }
 
 GameMain::~GameMain()
@@ -53,10 +52,14 @@ GameMain::~GameMain()
 
 AbstractScene* GameMain::Update()
 {
+	// マウスの入力状態を更新
+	MouseInputUpdate();
+
 	if (isHelpTime == true)
 	{
-		if (((GetMouseInput() & MOUSE_INPUT_LEFT) != 0))
+		if (IsMouseLeftClicked())
 		{
+			// 説明画面を非表示にする
 			isHelpTime = false;
 		}
 	}
@@ -84,11 +87,12 @@ AbstractScene* GameMain::Update()
 		}
 		else
 		{
-			timer->LoopTimer(1.0f, &SetTimeUp);
-
-			if (isTimeUp == false && ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0))
+			// マウス入力を10フレーム無視する
+			ignoreMouseInputFrames = 10;
+			//timer->LoopTimer(1.0f, &SetTimeUp);
+			if (isTimeUp == true && ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0))
 			{
-				
+
 				return new Title;
 			}
 		}
@@ -101,37 +105,47 @@ void GameMain::Draw() const
 {
 	if (isHelpTime == true)
 	{
-		DrawBox(80, 130, 600, 350, 0xfffbe3, TRUE);
+		// 背景に四角いボックスを描画
+		DrawBox(100, 130, 1180, 600, 0xfffbe3, TRUE);
 
 		//ゲームモードによって処理を変える
 		switch (gameMode)
 		{
 		case gamemode::clickPractice:
-			DrawStringToHandle(100, 200, "ここでは、クリックのれんしゅうをします\nマウスのボタンを押すことをクリックといいます\nがめんに出てくるネズミをクリックしてつかまえてみよう"
-				, 0xffffff, *fonts.at(fontname::text));
-			DrawStringToHandle(220, 300, "-- クリックしてスタート --", 0xffffff, *fonts.at(fontname::text));
+		{
+			const std::string text = "ここでは、クリックのれんしゅうをします\nマウスのボタンを押すことをクリックといいます\n"
+				"ねこをクリックしてネズミをつかまえさせよう";
+			DrawStringToHandle(GetDrawCenterX(text.c_str(), *fonts.at(fontname::mainUi)), 200, text.c_str(), 0xffffff, *fonts.at(fontname::mainUi));
+			DrawStringToHandle(GetDrawCenterX("-- クリックしてスタート --", *fonts.at(fontname::mainUi)), 480,
+				"-- クリックしてスタート --", 0xffffff, *fonts.at(fontname::mainUi));
 			break;
+		}
 
 		case gamemode::dragPractice:
-			DrawStringToHandle(100, 170, "ここでは、ドラッグ&ドロップのれんしゅうをします\nマウスのボタンを押し続けることをドラッグといい\nドラッグ中にボタンから指をはなすことをドロップといいます\nねこをドラッグしてネズミのいる場所に連れていき\nドロップさせてねずみをつかまえさせよう",
-				0xffffff, *fonts.at(fontname::text));
-			DrawStringToHandle(220, 300, "-- クリックしてスタート --", 0xffffff, *fonts.at(fontname::text));
+		{
+			const std::string text2 = "ここでは、ドラッグのれんしゅうをします\nマウスのボタンを押したまま\n動かすことをドラッグといいます\n"
+				"ねこをドラッグしてネズミをつかまえさせよう";
+			DrawStringToHandle(GetDrawCenterX(text2.c_str(), *fonts.at(fontname::mainUi)), 170, text2.c_str(),
+				0xffffff, *fonts.at(fontname::mainUi));
+			DrawStringToHandle(GetDrawCenterX("-- クリックしてスタート --", *fonts.at(fontname::mainUi)), 480,
+				"-- クリックしてスタート --", 0xffffff, *fonts.at(fontname::mainUi));
 			break;
+		}
 
 		default:
 			break;
 		}
 
-		
+
 
 	}
 	else
 	{
 		if (isTimeUp == false)
 		{
-			DrawFormatStringToHandle(0, 0, 0xffffff, *fonts.at(fontname::mainUi), "%d", 30 - static_cast<int>(timer->GetElapsedTime()));
+			DrawFormatStringToHandle(50, 50, 0xffffff, *fonts.at(fontname::mainUi), "残り時間：%d", 30 - static_cast<int>(timer->GetElapsedTime()));
 		}
-		DrawFormatStringToHandle(600, 0, 0xffffff, *fonts.at(fontname::mainUi), "%d", mouseManager->GetCollectCount());
+		DrawFormatStringToHandle(950, 50, 0xffffff, *fonts.at(fontname::mainUi), "捕まえた数：%d", mouseManager->GetCollectCount());
 
 		mouseManager->Draw();
 
@@ -153,16 +167,18 @@ void GameMain::Draw() const
 
 	if (isTimeUp == true)
 	{
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-		DrawBox(100, 130, 540, 350, 0xfffbe3, TRUE);
+		// 背景に四角いボックスを描画
+		DrawBox(100, 130, 1180, 600, 0xfffbe3, TRUE);
 
-		DrawStringToHandle(175, 170, "TIME UP", 0xff0000, *fonts.at(fontname::result));
+		DrawStringToHandle(GetDrawCenterX("TIME UP", *fonts.at(fontname::result)), 200, "TIME UP", 0xff0000, *fonts.at(fontname::result));
 
-		DrawFormatStringToHandle(245, 260, 0xffffff, *fonts.at(fontname::text), "つかまえた数 %d", mouseManager->GetCollectCount());
+		const std::string resultText = "つかまえた数：" + std::to_string(mouseManager->GetCollectCount());
+		DrawStringToHandle(GetDrawCenterX(resultText.c_str(), *fonts.at(fontname::mainUi)), 350, resultText.c_str(), 0xffffff, *fonts.at(fontname::mainUi));
 
-		DrawStringToHandle(185, 300, "-- クリックしてタイトルに戻る --", 0xffffff, *fonts.at(fontname::text));
+		DrawStringToHandle(GetDrawCenterX("-- クリックしてタイトルに戻る --", *fonts.at(fontname::mainUi)), 480, "-- クリックしてタイトルに戻る --", 0xffffff, *fonts.at(fontname::mainUi));
 
-		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 10);
+		/*SetDrawBlendMode(DX_BLENDMODE_ALPHA, 10);*/
 	}
 }
